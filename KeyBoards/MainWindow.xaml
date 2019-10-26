@@ -1,0 +1,181 @@
+﻿<Window x:Class="KeyBoards.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
+        xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+        xmlns:sys="clr-namespace:System;assembly=mscorlib"
+        xmlns:local="clr-namespace:KeyBoards"
+        mc:Ignorable="d"
+        Title="Device manager" Height="600" Width="800" WindowStartupLocation="CenterScreen">
+    <Window.Resources>
+        <ObjectDataProvider x:Key="ButtonTypeFromEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:ButtonType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ObjectDataProvider x:Key="EncoderTypeFromEnum" MethodName="GetValues" ObjectType="{x:Type sys:Enum}">
+            <ObjectDataProvider.MethodParameters>
+                <x:Type TypeName="local:EncoderType"/>
+            </ObjectDataProvider.MethodParameters>
+        </ObjectDataProvider>
+        <ControlTemplate x:Key="DeviceItemA">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"></RowDefinition>
+                    <RowDefinition Height="10*"></RowDefinition>
+                    <RowDefinition Height="10*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <GroupBox Grid.Row="0" Header="Serial number">
+                    <TextBox Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </GroupBox>
+                <GroupBox Grid.Row="1" Header="Firmware version">
+                    <TextBox Text="{Binding FirmwareVersion, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </GroupBox>
+                <GroupBox Grid.Row="2" Header="Button type">
+                    <ComboBox ItemsSource="{Binding Source={StaticResource ButtonTypeFromEnum}}" SelectedIndex="0" 
+                              SelectedItem="{Binding ButtonType}">
+                    </ComboBox>
+                </GroupBox>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate TargetType="GroupBox" x:Key="DeviceItemB">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"></RowDefinition>
+                    <RowDefinition Height="10*"></RowDefinition>
+                    <RowDefinition Height="10*"></RowDefinition>
+                    <RowDefinition Height="10*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <GroupBox Grid.Row="0" Header="Serial number">
+                    <TextBox Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </GroupBox>
+                <GroupBox Grid.Row="1" Header="Firmware version">
+                    <TextBox Text="{Binding FirmwareVersion, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </GroupBox>
+                <GroupBox Grid.Row="2" Header="Button type">
+                    <ComboBox ItemsSource="{Binding Source={StaticResource ButtonTypeFromEnum}}" SelectedIndex="0" 
+                              SelectedItem="{Binding ButtonType}">
+                    </ComboBox>
+                </GroupBox>
+                <GroupBox Grid.Row="3" Header="Button type">
+                    <ComboBox ItemsSource="{Binding Source={StaticResource EncoderTypeFromEnum}}" SelectedIndex="0"
+                              SelectedItem="{Binding EncoderType}">
+                    </ComboBox>
+                </GroupBox>
+            </Grid>
+        </ControlTemplate>
+        <ControlTemplate TargetType="GroupBox" x:Key="DeviceItemC">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="10*"></RowDefinition>
+                    <RowDefinition Height="10*"></RowDefinition>
+                    <RowDefinition Height="10*"></RowDefinition>
+                    <RowDefinition Height="10*"></RowDefinition>
+                    <RowDefinition Height="10*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <GroupBox Grid.Row="0" Header="Serial number">
+                    <TextBox Text="{Binding SerialNumber, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </GroupBox>
+                <GroupBox Grid.Row="1" Header="Firmware version">
+                    <TextBox Text="{Binding FirmwareVersion, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                </GroupBox>
+                <GroupBox Grid.Row="2" Header="Button type">
+                    <ComboBox ItemsSource="{Binding Source={StaticResource ButtonTypeFromEnum}}" SelectedIndex="0" 
+                              SelectedItem="{Binding ButtonType}">
+                    </ComboBox>
+                </GroupBox>
+                <GroupBox Grid.Row="3" Header="Button type">
+                    <ComboBox ItemsSource="{Binding Source={StaticResource EncoderTypeFromEnum}}" SelectedIndex="0"
+                              SelectedItem="{Binding EncoderType}">
+                    </ComboBox>
+                </GroupBox>
+                <GroupBox Grid.Row="4" Header="Touch screen size (width/height)">
+                    <StackPanel Orientation="Horizontal" DataContext="{Binding TouchScreenSize}">
+                        <TextBox MinWidth="100" Text="{Binding Width, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                        <Label> / </Label>
+                        <TextBox MinWidth="100" Text="{Binding Height, UpdateSourceTrigger=PropertyChanged}"></TextBox>
+                    </StackPanel>
+                </GroupBox>
+            </Grid>
+        </ControlTemplate>
+    </Window.Resources>
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="10*"></RowDefinition>
+            <RowDefinition Height="7*"></RowDefinition>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="10*"></ColumnDefinition>
+            <ColumnDefinition Width="10*"></ColumnDefinition>
+            <ColumnDefinition Width="4*"></ColumnDefinition>
+        </Grid.ColumnDefinitions>
+        <GroupBox Grid.Column="0" Grid.Row="0" Header="Devices">
+            <ListBox x:Name="ListBoxDevices" DisplayMemberPath="GetInfo"></ListBox>
+        </GroupBox>
+        <GroupBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Header="Test">
+            <ListBox x:Name="ListBoxTest"></ListBox>
+        </GroupBox>
+        <GroupBox Grid.Column="1" Grid.Row="0" Header="Add device data">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="3*"></RowDefinition>
+                    <RowDefinition Height="10*"></RowDefinition>
+                </Grid.RowDefinitions>
+                <GroupBox Grid.Row="0" Header="Device type">
+                    <ComboBox x:Name="ComboBoxDevices" SelectedIndex="2">
+                        <ListBoxItem Content="Type A"/>
+                        <ListBoxItem Content="Type B"/>
+                        <ListBoxItem Content="Type C"/>
+                    </ComboBox>
+                </GroupBox>
+                <GroupBox Grid.Row="1" Header="Device item" >
+                    <GroupBox.Style>
+                        <Style TargetType="ContentControl">
+                            <Style.Triggers>
+                                <DataTrigger Binding="{Binding ElementName=ComboBoxDevices, Path=SelectedIndex}" Value="0">
+                                    <Setter Property="Template" Value="{StaticResource DeviceItemA}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ComboBoxDevices, Path=SelectedIndex}" Value="1">
+                                    <Setter Property="Template" Value="{StaticResource DeviceItemB}"/>
+                                </DataTrigger>
+                                <DataTrigger Binding="{Binding ElementName=ComboBoxDevices, Path=SelectedIndex}" Value="2">
+                                    <Setter Property="Template" Value="{StaticResource DeviceItemC}"/>
+                                </DataTrigger>
+                            </Style.Triggers>
+                        </Style>
+                    </GroupBox.Style>                    
+                </GroupBox>
+            </Grid>
+        </GroupBox>
+        <Grid Grid.Column="2" Grid.Row="0">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Button x:Name="ButtonAdd" Margin="20" Click="ButtonAdd_Click">Add</Button>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Button x:Name="ButtonDelete" Margin="20" Click="ButtonDelete_Click">Delete</Button>
+            </Grid>
+            <Grid Grid.Row="2">
+                <Button x:Name="ButtonClear" Margin="20" Click="ButtonClear_Click">Clear</Button>
+            </Grid>
+        </Grid>
+        <Grid Grid.Column="2" Grid.Row="1">
+            <Grid.RowDefinitions>
+                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
+                <RowDefinition Height="10*"></RowDefinition>
+            </Grid.RowDefinitions>
+            <Grid Grid.Row="0">
+                <Button x:Name="ButtonTest" Margin="20">Test</Button>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Button x:Name="ButtonExit" Margin="20">Exit</Button>
+            </Grid>
+        </Grid>
+    </Grid>
+</Window>
