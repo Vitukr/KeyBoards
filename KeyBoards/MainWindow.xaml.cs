@@ -116,5 +116,20 @@ namespace KeyBoards
             instance.Clear();
             Devices.Clear();
         }
+
+        private void ButtonExit_Click(object sender, RoutedEventArgs e)
+        {
+            Close();
+        }
+
+        private void ButtonTest_Click(object sender, RoutedEventArgs e)
+        {
+            RunTest();
+        }
+
+        private void RunTest()
+        {
+
+        }
     }
 }
