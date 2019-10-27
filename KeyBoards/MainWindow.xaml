@@ -162,7 +162,7 @@
                 <Button x:Name="ButtonClear" Margin="20" Click="ButtonClear_Click">Clear</Button>
             </Grid>
         </Grid>
-        <GroupBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Header="Test">
+        <GroupBox Grid.Column="0" Grid.Row="1" Grid.ColumnSpan="2" Grid.RowSpan="2" Header="Test">
             <ListBox x:Name="ListBoxTest"></ListBox>
         </GroupBox>
         <Grid Grid.Column="2" Grid.Row="1">
@@ -171,12 +171,15 @@
                 <RowDefinition Height="10*"></RowDefinition>
             </Grid.RowDefinitions>
             <Grid Grid.Row="0">
-                <Button x:Name="ButtonTest" Margin="20" Click="ButtonTest_Click">Test</Button>
+                <Button x:Name="ButtonTest" Margin="20" Click="ButtonTest_Click">Test start</Button>
+            </Grid>
+            <Grid Grid.Row="1">
+                <Button x:Name="ButtonTestEnd" Margin="20" Click="ButtonTestEnd_Click">Test end</Button>
             </Grid>
         </Grid>
-        <GroupBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Header="Messages">
+        <!--<GroupBox Grid.Column="0" Grid.Row="2" Grid.ColumnSpan="2" Header="Messages">
             <ListBox x:Name="ListBoxMessages"></ListBox>
-        </GroupBox>
+        </GroupBox>-->
         <Grid Grid.Column="2" Grid.Row="2">
             <Grid.RowDefinitions>
                 <RowDefinition Height="10*"></RowDefinition>

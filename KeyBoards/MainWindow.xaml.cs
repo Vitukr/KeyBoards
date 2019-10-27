@@ -1,8 +1,10 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
 using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
@@ -57,6 +59,7 @@ namespace KeyBoards
         }
 
         public ObservableCollection<Device> Devices = new ObservableCollection<Device>();
+        private bool testRun = false;
 
         public MainWindow()
         {
@@ -74,17 +77,14 @@ namespace KeyBoards
                 case 0:
                     var deviceA = new DeviceA() { SerialNumber = SerialNumber, FirmwareVersion = FirmwareVersion, ButtonType = ButtonType };
                     instance.Add(deviceA);
-                    Devices.Add(deviceA);
                     break;
                 case 1:
                     var deviceB = new DeviceB() { SerialNumber = SerialNumber, FirmwareVersion = FirmwareVersion, ButtonType = ButtonType, EncoderType = EncoderType };
                     instance.Add(deviceB);
-                    Devices.Add(deviceB);
                     break;
                 case 2:
                     var deviceC = new DeviceC() { SerialNumber = SerialNumber, FirmwareVersion = FirmwareVersion, ButtonType = ButtonType, EncoderType = EncoderType, TouchScreenSize = TouchScreenSize };
                     instance.Add(deviceC);
-                    Devices.Add(deviceC);
                     break;
             }
         }
@@ -97,15 +97,12 @@ namespace KeyBoards
             {
                 case DeviceA device:
                     instance.Delete(device.SerialNumber);
-                    Devices.Remove(device);
                     break;
                 case DeviceB device:
                     instance.Delete(device.SerialNumber);
-                    Devices.Remove(device);
                     break;
                 case DeviceC device:
                     instance.Delete(device.SerialNumber);
-                    Devices.Remove(device);
                     break;
             }
         }
@@ -124,12 +121,140 @@ namespace KeyBoards
 
         private void ButtonTest_Click(object sender, RoutedEventArgs e)
         {
-            RunTest();
+            DeviceManager deviceManager = DeviceManager.GetInstance();
+            deviceManager.Clear();
+            Devices.Clear();
+            ListBoxTest.Items.Clear();
+            testRun = true;
+            Task.Run(() => RunTest());
         }
 
         private void RunTest()
         {
+            int sn = 0;
+            Random random = new Random();
 
+            int numThreads = 0;
+            while (numThreads < 1000 && testRun)
+            {                
+                numThreads++;
+                int index = random.Next(0, 9);
+                switch (index)
+                {
+                    case 0:
+                        sn++;
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(100 * (sn % 10));
+                            DeviceManager deviceManager = DeviceManager.GetInstance();
+                            deviceManager.Add(new DeviceA() { SerialNumber = "A" + sn, FirmwareVersion = "AV" + sn, ButtonType = (ButtonType)(sn % 2) });
+                            Thread.Sleep(100 * (sn % 10));
+                        }).Start();
+                        break;
+                    case 1:
+                        sn++;
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(100 * (sn % 10));
+                            DeviceManager deviceManager = DeviceManager.GetInstance();
+                            deviceManager.Add(new DeviceB() { SerialNumber = "B" + sn, FirmwareVersion = "BV" + sn, ButtonType = (ButtonType)(sn % 2), EncoderType = (EncoderType)(sn % 2) });
+                            Thread.Sleep(100 * (sn % 10));
+                        }).Start();
+                        break;
+                    case 2:
+                        sn++;
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(100 * (sn % 10));
+                            DeviceManager deviceManager = DeviceManager.GetInstance();
+                            deviceManager.Add(new DeviceC() { SerialNumber = "C" + sn, FirmwareVersion = "CV" + sn, ButtonType = (ButtonType)(sn % 2), EncoderType = (EncoderType)(sn % 2), TouchScreenSize = new TouchScreenSize() { Width = sn, Height = sn } });
+                            Thread.Sleep(100 * (sn % 10));
+                        }).Start();
+                        break;
+                    case 3:
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(100 * (sn % 10));
+                            DeviceManager deviceManager = DeviceManager.GetInstance();
+                            var device = deviceManager.GetDevice(random.Next(0, deviceManager.GetLenth()));
+                            if (device != null)
+                                deviceManager.Delete(device.SerialNumber);
+                            Thread.Sleep(100 * (sn % 10));
+                        }).Start();
+                        break;
+                    case 4:
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(100 * (sn % 10));
+                            DeviceManager deviceManager = DeviceManager.GetInstance();
+                            var device = deviceManager.GetDevice(random.Next(0, deviceManager.GetLenth()));
+                            if (device != null)
+                                deviceManager.Delete(device.SerialNumber);
+                            Thread.Sleep(100 * (sn % 10));
+                        }).Start();
+                        break;
+                    case 5:
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(100 * (sn % 10));
+                            DeviceManager deviceManager = DeviceManager.GetInstance();
+                            var device = deviceManager.GetDevice(random.Next(0, deviceManager.GetLenth()));
+                            if (device != null)
+                                deviceManager.Delete(device.SerialNumber);
+                            Thread.Sleep(100 * (sn % 10));
+                        }).Start();
+                        break;
+                    case 6:
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(100 * (sn % 10));
+                            DeviceManager deviceManager = DeviceManager.GetInstance();
+                            var device = deviceManager.GetDevice(random.Next(0, deviceManager.GetLenth()));
+                            if (device != null)
+                                deviceManager.Delete(device.SerialNumber);
+                            Thread.Sleep(100 * (sn % 10));
+                        }).Start();
+                        break;
+                    case 7:
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(100 * (sn % 10));
+                            DeviceManager deviceManager = DeviceManager.GetInstance();
+                            var device = deviceManager.GetDevice(random.Next(0, deviceManager.GetLenth()));
+                            if (device != null)
+                                deviceManager.GetInfo(device.SerialNumber);
+                            Thread.Sleep(100 * (sn % 10));
+                        }).Start();
+                        break;
+                    case 8:
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(100 * (sn % 10));
+                            DeviceManager deviceManager = DeviceManager.GetInstance();
+                            var device = deviceManager.GetDevice(random.Next(0, deviceManager.GetLenth()));
+                            if (device != null)
+                                deviceManager.GetInfo(device.SerialNumber);
+                            Thread.Sleep(100 * (sn % 10));
+                        }).Start();
+                        break;
+                    case 9:
+                        new Thread(() =>
+                        {
+                            Thread.Sleep(100 * (sn % 10));
+                            DeviceManager deviceManager = DeviceManager.GetInstance();
+                            var device = deviceManager.GetDevice(random.Next(0, deviceManager.GetLenth()));
+                            if (device != null)
+                                deviceManager.GetInfo(device.SerialNumber);
+                            Thread.Sleep(100 * (sn % 10));
+                        }).Start();
+                        break;
+                }
+            }
+        }
+
+        private void ButtonTestEnd_Click(object sender, RoutedEventArgs e)
+        {
+            testRun = false;
         }
     }
 }
